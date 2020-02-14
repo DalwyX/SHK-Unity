@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
 
     public void ActivateBonus()
     {
+        if (_isBonusActive) return;
+
         _isBonusActive = true;
         _bonusRemainingTime = _bonusTime;
         _moveSpeed *= _bonusSpeedModifier;
