@@ -1,24 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _walkingAreaRadius = 4f;
+    public event Action<Enemy> EnemyDied;
     private Vector3 _currentTarget;
 
     private void Start()
     {
         SetNewDestination();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var player = collision.GetComponent<Player>();
-        if (player != null)
-        {
-            player.ActivateBonus();
-            Destroy(gameObject);
-        }
     }
 
     private void Update()
@@ -30,8 +22,19 @@ public class Enemy : MonoBehaviour
             SetNewDestination();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var player = collision.GetComponent<Player>();
+        if (player != null)
+        {
+            player.ActivateBonus();
+            EnemyDied?.Invoke(this);
+            Destroy(gameObject);
+        }
+    }
+
     public void SetNewDestination()
     {
-        _currentTarget = Random.insideUnitCircle * _walkingAreaRadius;
+        _currentTarget = UnityEngine.Random.insideUnitCircle * _walkingAreaRadius;
     }
 }
