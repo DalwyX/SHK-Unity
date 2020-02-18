@@ -5,21 +5,22 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _walkingAreaRadius = 4f;
-    public event Action<Enemy> EnemyDied;
-    private Vector3 _currentTarget;
+    private Vector3 _target;
+
+    public event Action<Enemy> Died;
 
     private void Start()
     {
-        SetNewDestination();
+        CreateNewTarget();
     }
 
     private void Update()
     {
         var maxDistanceDelta = _moveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, _currentTarget, maxDistanceDelta);
+        transform.position = Vector3.MoveTowards(transform.position, _target, maxDistanceDelta);
 
-        if (transform.position == _currentTarget)
-            SetNewDestination();
+        if (transform.position == _target)
+            CreateNewTarget();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,13 +29,13 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             player.ActivateBonus();
-            EnemyDied?.Invoke(this);
+            Died?.Invoke(this);
             Destroy(gameObject);
         }
     }
 
-    public void SetNewDestination()
+    public void CreateNewTarget()
     {
-        _currentTarget = UnityEngine.Random.insideUnitCircle * _walkingAreaRadius;
+        _target = UnityEngine.Random.insideUnitCircle * _walkingAreaRadius;
     }
 }

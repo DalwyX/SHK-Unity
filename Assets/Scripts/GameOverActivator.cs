@@ -4,13 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class GameOverActivator : MonoBehaviour
 {
-    private SpriteRenderer _sr;
+    private SpriteRenderer _spriteRenderer;
     private List<Enemy> _enemies;
 
     private void Awake()
     {
-        _sr = GetComponent<SpriteRenderer>();
-        _sr.enabled = false;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.enabled = false;
     }
 
     private void OnEnable()
@@ -18,7 +18,7 @@ public class GameOverActivator : MonoBehaviour
         _enemies = new List<Enemy>(FindObjectsOfType<Enemy>());
         foreach (var enemy in _enemies)
         {
-            enemy.EnemyDied += CheckGameOverCondition;
+            enemy.Died += OnEnemyDied;
         }
     }
 
@@ -26,11 +26,11 @@ public class GameOverActivator : MonoBehaviour
     {
         foreach (var enemy in _enemies)
         {
-            enemy.EnemyDied -= CheckGameOverCondition;
+            enemy.Died -= OnEnemyDied;
         }
     }
 
-    public void CheckGameOverCondition(Enemy diedEnemy)
+    public void OnEnemyDied(Enemy diedEnemy)
     {
         _enemies.Remove(diedEnemy);
         if (_enemies.Count == 0)
@@ -41,6 +41,6 @@ public class GameOverActivator : MonoBehaviour
 
     private void ActivateGameOverScreen()
     {
-        _sr.enabled = true;
+        _spriteRenderer.enabled = true;
     }
 }
