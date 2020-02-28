@@ -16,8 +16,8 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        var maxDistanceDelta = _moveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, _target, maxDistanceDelta);
+        var delta = _moveSpeed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, _target, delta);
 
         if (transform.position == _target)
             CreateNewTarget();

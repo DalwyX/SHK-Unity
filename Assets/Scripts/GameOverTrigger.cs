@@ -2,15 +2,15 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class GameOverActivator : MonoBehaviour
+public class GameOverTrigger : MonoBehaviour
 {
-    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _gameOverScreen;
     private List<Enemy> _enemies;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteRenderer.enabled = false;
+        _gameOverScreen = GetComponent<SpriteRenderer>();
+        _gameOverScreen.enabled = false;
     }
 
     private void OnEnable()
@@ -41,6 +41,6 @@ public class GameOverActivator : MonoBehaviour
 
     private void ActivateGameOverScreen()
     {
-        _spriteRenderer.enabled = true;
+        _gameOverScreen.enabled = true;
     }
 }
